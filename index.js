@@ -1,17 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import classNames from "classnames";
+import uuid from "uuid/v1";
 
 import "./index.scss";
 
 class App extends React.Component {
   state = {
-    notes: ["A", "B", "C", "D"]
+    notes: []
   };
 
   handleAddNote = text => {
     this.setState(prevState => ({
-      notes: prevState.notes.concat(text)
+      notes: prevState.notes.concat({ id: uuid(), text })
     }));
   };
 
@@ -21,7 +22,7 @@ class App extends React.Component {
       const removedNote = newNotes.splice(index, 1)[0];
 
       if (direction === "up") {
-        newNotes.slice(index - 1, 0, removedNote);
+        newNotes.splice(index - 1, 0, removedNote);
       } else {
         newNotes.splice(index + 1, 0, removedNote);
       }
@@ -50,6 +51,7 @@ class NewNote extends React.Component {
   render() {
     const { onAddNote } = this.props;
     const { text } = this.state;
+
     return (
       <div className="new-note">
         <input
@@ -79,9 +81,8 @@ class NewNote extends React.Component {
 const NoteList = ({ notes, onMove }) => (
   <div className="note-list">
     {notes.map((note, index) => (
-      <div className="note">
-        <span className="note__text">{note}</span>
-
+      <div key={note.id} className="note">
+        <span className="note__text">{note.text}</span>
         <button
           className={classNames("note__button", {
             "note__button--hidden": index === 0
@@ -92,7 +93,6 @@ const NoteList = ({ notes, onMove }) => (
         >
           <i className="material-icons">arrow_upward</i>
         </button>
-
         <button
           className={classNames("note__button", {
             "note__button--hidden": index === notes.length - 1
