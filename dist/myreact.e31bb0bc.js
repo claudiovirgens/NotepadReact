@@ -44504,6 +44504,17 @@ function (_React$Component) {
           notes: newNotes
         };
       });
+    }, _this.handleEdit = function (id, text) {
+      _this.setState(function (prevState) {
+        var newNotes = prevState.notes.slice();
+        var index = newNotes.findIndex(function (note) {
+          return note.id === id;
+        });
+        newNotes[index].text = text;
+        return {
+          notes: newNotes
+        };
+      });
     }, _temp));
   }
 
@@ -44517,7 +44528,8 @@ function (_React$Component) {
       }), _react.default.createElement(NoteList, {
         notes: this.state.notes,
         onMove: this.handleMove,
-        onDelete: this.handleDelete
+        onDelete: this.handleDelete,
+        onEdit: this.handleEdit
       }));
     }
   }]);
@@ -44583,44 +44595,139 @@ function (_React$Component2) {
   return NewNote;
 }(_react.default.Component);
 
+var Note =
+/*#__PURE__*/
+function (_React$Component3) {
+  _inherits(Note, _React$Component3);
+
+  function Note() {
+    var _getPrototypeOf4;
+
+    var _this4;
+
+    var _temp3;
+
+    _classCallCheck(this, Note);
+
+    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
+    }
+
+    return _possibleConstructorReturn(_this4, (_temp3 = _this4 = _possibleConstructorReturn(this, (_getPrototypeOf4 = _getPrototypeOf(Note)).call.apply(_getPrototypeOf4, [this].concat(args))), _this4.state = {
+      isEditing: false
+    }, _this4.handleEdit = function () {
+      _this4.setState({
+        isEditing: true
+      });
+    }, _this4.handleCancel = function () {
+      _this4.setState({
+        isEditing: false
+      });
+    }, _this4.handleSave = function () {
+      _this4.props.onEdit(_this4.props.note.id, _this4.input.value);
+
+      _this4.setState({
+        isEditing: false
+      });
+    }, _temp3));
+  }
+
+  _createClass(Note, [{
+    key: "render",
+    value: function render() {
+      var _this5 = this;
+
+      var _this$props = this.props,
+          note = _this$props.note,
+          onEdit = _this$props.onEdit,
+          onDelete = _this$props.onDelete,
+          index = _this$props.index,
+          onMove = _this$props.onMove,
+          total = _this$props.total;
+      var isEditing = this.state.isEditing;
+      return _react.default.createElement("div", {
+        className: "note"
+      }, isEditing ? _react.default.createElement("input", {
+        type: "text",
+        className: "note__input",
+        defaultValue: note.txt,
+        ref: function ref(c) {
+          _this5.input = c;
+        }
+      }) : _react.default.createElement("span", {
+        className: "note__text"
+      }, note.text), isEditing && _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("button", {
+        className: "note__button note__button--red",
+        onClick: function onClick() {
+          _this5.handleCancel();
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "cancel")), _react.default.createElement("button", {
+        className: "note__button note__button--green",
+        onClick: function onClick() {
+          _this5.handleSave();
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "done_outline"))), _react.default.createElement("button", {
+        disabled: isEditing,
+        className: "note__button",
+        onClick: function onClick() {
+          _this5.handleEdit();
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "edit")), _react.default.createElement("button", {
+        disabled: isEditing,
+        className: "note__button",
+        onClick: function onClick() {
+          onDelete(note.id);
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "delete")), _react.default.createElement("button", {
+        className: (0, _classnames.default)("note__button", {
+          "note__button--hidden": index === 0
+        }),
+        onClick: function onClick() {
+          onMove("up", index);
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "arrow_upward")), _react.default.createElement("button", {
+        className: (0, _classnames.default)("note__button", {
+          "note__button--hidden": index === total - 1
+        }),
+        onClick: function onClick() {
+          onMove("down", index);
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "arrow_downward")));
+    }
+  }]);
+
+  return Note;
+}(_react.default.Component);
+
 var NoteList = function NoteList(_ref) {
   var notes = _ref.notes,
       onMove = _ref.onMove,
-      onDelete = _ref.onDelete;
+      onDelete = _ref.onDelete,
+      onEdit = _ref.onEdit;
   return _react.default.createElement("div", {
     className: "note-list"
   }, notes.map(function (note, index) {
-    return _react.default.createElement("div", {
+    return _react.default.createElement(Note, {
       key: note.id,
-      className: "note"
-    }, _react.default.createElement("span", {
-      className: "note__text"
-    }, note.text), _react.default.createElement("button", {
-      className: "note__button",
-      onClick: function onClick() {
-        onDelete(note.id);
-      }
-    }, _react.default.createElement("i", {
-      className: "material-icons"
-    }, "delete")), _react.default.createElement("button", {
-      className: (0, _classnames.default)("note__button", {
-        "note__button--hidden": index === 0
-      }),
-      onClick: function onClick() {
-        onMove("up", index);
-      }
-    }, _react.default.createElement("i", {
-      className: "material-icons"
-    }, "arrow_upward")), _react.default.createElement("button", {
-      className: (0, _classnames.default)("note__button", {
-        "note__button--hidden": index === notes.length - 1
-      }),
-      onClick: function onClick() {
-        onMove("down", index);
-      }
-    }, _react.default.createElement("i", {
-      className: "material-icons"
-    }, "arrow_downward")));
+      note: note,
+      onEdit: onEdit,
+      onDelete: onDelete,
+      index: index,
+      onMove: onMove,
+      total: notes.length
+    });
   }));
 };
 
