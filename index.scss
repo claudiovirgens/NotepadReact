@@ -44,9 +44,25 @@ body {
 }
 
 .note {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
   background-color: #fff;
   padding: 10x 12px;
   border-radius: 2px;
   @include box-shadow(2);
+
+  &__text {
+    flex: 1;
+  }
+
+  &__button {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+
+    &--hidden {
+      visibility: hidden;
+    }
+  }
 }

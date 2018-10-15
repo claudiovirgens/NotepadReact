@@ -29,9 +29,22 @@ body {
 }
 
 .note {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
   background-color: #fff;
   padding: 10x 12px;
   border-radius: 2px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+.note__text {
+  flex: 1;
+}
+.note__button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.note__button--hidden {
+  visibility: hidden;
 }
